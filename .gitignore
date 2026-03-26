@@ -1,0 +1,16 @@
+# Model weights and outputs
+*.zip
+*.gguf
+*.bin
+*.safetensors
+output/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environment
+.env
+wrench-training-memory.md
+MODELMAKINGMEMORY.md
