@@ -5,21 +5,34 @@ Training data and notebooks for **Wrench** — a family of LoRA fine-tuned model
 | Model | Base | Score | VRAM | Download |
 |-------|------|-------|------|----------|
 | **Wrench 35B v7** | [Qwen3.5-35B-A3B](https://huggingface.co/Qwen/Qwen3.5-35B-A3B) (MoE) | 118/120 (98.3%) | 16GB | [HuggingFace](https://huggingface.co/ClankLabs/Wrench-35B-A3B-Q4_K_M-GGUF) |
-| **Wrench 9B v3** | [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) (dense) | 105/120 (87.5%) | 8GB | [HuggingFace](https://huggingface.co/ClankLabs/Wrench-9B-Q4_K_M-GGUF) |
+| **Wrench 9B v4** | [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) (dense) | 114/120 (95.0%) | 8GB | [HuggingFace](https://huggingface.co/ClankLabs/Wrench-9B-Q4_K_M-GGUF) |
 
 ## Results
 
-Wrench 35B v7 scores **118/120 (98.3%)** on our 8-category agentic benchmark — matching Claude Opus 4.6, above GPT-5.2 and Claude Sonnet, running locally on a consumer GPU.
+Wrench 35B v7 scores **118/120 (98.3%)** on our 8-category agentic benchmark and **82.0%** on the [Berkeley Function Calling Leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html) (BFCL) non_live/AST category — an independent, standardized benchmark across 1,390 test cases.
 
-| Model | Score | Runs On | Cost |
-|-------|-------|---------|------|
-| **Wrench 35B v7** | **118/120** | **16GB GPU** | **Free** |
-| Claude Opus 4.6 | ~118/120 | Cloud | Paid |
-| GPT-5.2 | ~116/120 | Cloud | $20/mo |
-| Claude Sonnet 4.6 | ~114/120 | Cloud | $20/mo |
-| Wrench 35B v5 | 113/120 | 16GB GPU | Free |
-| GPT-4o | ~110/120 | Cloud | $20/mo |
-| **Wrench 9B v3** | **105/120** | **8GB GPU** | **Free** |
+| Model | Clank Benchmark | BFCL (non_live) | Runs On | Cost |
+|-------|----------------|-----------------|---------|------|
+| **Wrench 35B v7** | **118/120** | **82.0%** | **16GB GPU** | **Free** |
+| Claude Opus 4.6 | ~118/120 | — | Cloud | Paid |
+| GPT-5.2 | ~116/120 | — | Cloud | $20/mo |
+| Claude Sonnet 4.6 | ~114/120 | — | Cloud | $20/mo |
+| Wrench 35B v5 | 113/120 | — | 16GB GPU | Free |
+| GPT-4o | ~110/120 | — | Cloud | $20/mo |
+| **Wrench 9B v4** | **114/120** | **—** | **8GB GPU** | **Free** |
+
+### BFCL Breakdown (Wrench 35B)
+
+| Category | Accuracy | Correct/Total |
+|----------|----------|---------------|
+| Simple (Python) | 84.75% | 339/400 |
+| Simple (Java) | 44.0% | 44/100 |
+| Simple (JavaScript) | 56.0% | 28/50 |
+| Multiple | 84.5% | 169/200 |
+| Parallel | 85.0% | 170/200 |
+| Parallel Multiple | 82.5% | 165/200 |
+| Irrelevance Detection | 88.75% | 213/240 |
+| **Overall** | **82.0%** | **1128/1390** |
 
 ### Per-Category Breakdown (35B)
 
@@ -108,13 +121,14 @@ Targeted training data designed to close specific behavioral gaps between local 
 - **Final loss:** 0.1592
 - **Output format:** GGUF Q4_K_M (~20GB, runs on 16GB VRAM)
 
-### Wrench 9B (v3 — current)
+### Wrench 9B (v4 — current)
 - **Base model:** Qwen3.5-9B (dense)
 - **Method:** LoRA (rank 32, alpha 64) via HuggingFace PEFT + Trainer
 - **Hardware:** 1x NVIDIA H100 80GB (RunPod)
 - **Training time:** ~30 min per run
 - **Hyperparameters:** batch_size=1, gradient_accumulation=8, 2 epochs, lr=1e-4
-- **Final loss:** 0.1705
+- **Examples:** 1,356 (1,251 base + 105 frontier)
+- **Final loss:** 0.1512
 - **Output format:** GGUF Q4_K_M (~5GB, runs on 8GB VRAM)
 
 ## Data Format
